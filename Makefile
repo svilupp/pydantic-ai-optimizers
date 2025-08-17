@@ -23,7 +23,7 @@ install-dev:
 
 # Testing
 test:
-	python -m pytest
+	uv run python -m pytest
 
 # Code quality
 lint:

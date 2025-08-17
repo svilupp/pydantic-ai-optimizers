@@ -8,10 +8,10 @@ from pathlib import Path
 from statistics import mean
 from typing import Any
 
-import textprompts
-from loguru import logger
-
-from .dataset import Dataset, ReportCase
+import textprompts  # type: ignore
+from loguru import logger  # type: ignore
+from pydantic_evals import Dataset  # type: ignore
+from pydantic_evals.reporting import ReportCase  # type: ignore
 
 RunCase = Callable[[str, Any], Awaitable[Any]]
 
@@ -65,13 +65,13 @@ class Optimizer:
         self,
         dataset: Dataset,
         run_case: RunCase,
-        reflection_agent,
+        reflection_agent: Any,
         pool_dir: str | Path = "prompt_pool",
         minibatch_size: int = 4,
         max_pool_size: int = 16,
         seed: int = 0,
         keep_failed_mutations: bool = False,
-    ):
+    ) -> None:
         self.dataset = dataset
         self.run_case = run_case
         self.reflection_agent = reflection_agent
@@ -246,12 +246,10 @@ class Optimizer:
         logger.info(f"   Parent {parent_idx} score on minibatch: {parent_avg:.3f}")
 
         def eval_subset(prompt: Path) -> dict[str, Any]:
-            def task_fn(user_text: str):
+            def task_fn(user_text: str) -> Any:
                 return self.run_case(str(prompt), user_text)
 
             # build a mini dataset on the fly
-            from evals.dataset_lite import Dataset
-
             mini = Dataset(cases=sub_cases, evaluators=self.dataset.evaluators)
             rep = mini.evaluate_sync(task_fn)
             scores = [_score_from_report_case(rc) for rc in rep.cases]
@@ -342,7 +340,7 @@ class Optimizer:
         return _write_new_prompt_file(new_text, self.pool_dir, len(self.candidates))
 
     def _evaluate_full_sync(self, prompt_path: Path) -> list[CaseEval]:
-        def task_fn(user_text: str):
+        def task_fn(user_text: str) -> Any:
             return self.run_case(str(prompt_path), user_text)
 
         report = self.dataset.evaluate_sync(task_fn)

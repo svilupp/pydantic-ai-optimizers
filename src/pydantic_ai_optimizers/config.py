@@ -69,7 +69,7 @@ ENV_DOCS = {
 }
 
 
-def print_env_help():
+def print_env_help() -> None:
     """Print help for environment variables."""
     print("Environment Variables:")
     print("=" * 50)

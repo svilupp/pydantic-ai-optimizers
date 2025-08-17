@@ -1414,35 +1414,15 @@ wheels = [
 [[package]]
 name = "pydantic-ai-helpers"
 version = "0.0.2"
-source = { directory = "../../pydantic-ai-helpers" }
+source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pydantic-ai" },
     { name = "pydantic-evals" },
     { name = "rapidfuzz" },
 ]
-
-[package.metadata]
-requires-dist = [
-    { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.8.0" },
-    { name = "pre-commit", marker = "extra == 'dev'", specifier = ">=3.5.0" },
-    { name = "pydantic-ai", specifier = ">=0.0.20" },
-    { name = "pydantic-core", marker = "extra == 'dev'", specifier = ">=2.0.0" },
-    { name = "pydantic-evals", specifier = ">=0.7.2" },
-    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0.0" },
-    { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=0.21.0" },
-    { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=4.1.0" },
-    { name = "rapidfuzz", specifier = ">=3.13.0" },
-    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.5.0" },
-]
-provides-extras = ["dev"]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "mypy", specifier = ">=1.16.1" },
-    { name = "pre-commit", specifier = ">=3.0.0" },
-    { name = "pytest", specifier = ">=8.4.1" },
-    { name = "pytest-cov", specifier = ">=6.2.1" },
-    { name = "ruff", specifier = ">=0.12.2" },
+sdist = { url = "https://files.pythonhosted.org/packages/49/ae/4aa17b40eca4888979891cf23b765abd17630757280ccc7c859b96ecf775/pydantic_ai_helpers-0.0.2.tar.gz", hash = "sha256:eb977c29eb23decec78fb31f07c7bc06fdb0bd53f551d7fb8b77e65bc69e1f82", size = 31256, upload-time = "2025-08-17T20:35:13.041Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b8/ce/d462d5606111438b8661e40c1b017f94be08bab6828978afba9a384e3b52/pydantic_ai_helpers-0.0.2-py3-none-any.whl", hash = "sha256:53b1807dfda90c195526f403236aca84ddc783fdd6b57ceb7516b49e77c935ee", size = 35201, upload-time = "2025-08-17T20:35:11.801Z" },
 ]
 
 [[package]]
@@ -1454,6 +1434,7 @@ dependencies = [
     { name = "loguru" },
     { name = "pydantic-ai" },
     { name = "pydantic-ai-helpers" },
+    { name = "pydantic-evals" },
     { name = "python-dotenv" },
     { name = "textprompts" },
 ]
@@ -1468,6 +1449,13 @@ dev = [
     { name = "ruff" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "pytest-cov" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "logfire", specifier = ">=4.3.3" },
@@ -1475,7 +1463,8 @@ requires-dist = [
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.8.0" },
     { name = "pre-commit", marker = "extra == 'dev'", specifier = ">=3.6.0" },
     { name = "pydantic-ai", specifier = ">=0.7.2" },
-    { name = "pydantic-ai-helpers", directory = "../../pydantic-ai-helpers" },
+    { name = "pydantic-ai-helpers", specifier = ">=0.0.2" },
+    { name = "pydantic-evals", specifier = ">=0.7.2" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.4.1" },
     { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=0.21.0" },
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=6.2.1" },
@@ -1484,6 +1473,13 @@ requires-dist = [
     { name = "textprompts", specifier = ">=0.0.4" },
 ]
 provides-extras = ["dev"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "pytest", specifier = ">=8.4.1" },
+    { name = "pytest-asyncio", specifier = ">=1.1.0" },
+    { name = "pytest-cov", specifier = ">=6.2.1" },
+]
 
 [[package]]
 name = "pydantic-ai-slim"
