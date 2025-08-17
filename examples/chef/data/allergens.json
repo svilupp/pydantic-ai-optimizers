@@ -1,0 +1,11 @@
+{
+  "peanut": ["peanuts", "peanut butter", "peanut oil"],
+  "tree nut": ["almonds", "cashews", "walnuts", "hazelnuts", "pecans", "pistachios"],
+  "gluten": ["wheat flour", "wheat pasta", "wheat bread", "wheat bun", "wheat tortilla", "pasta", "bread", "pizza dough", "soy sauce"],
+  "shellfish": ["shrimp", "crab", "lobster"],
+  "fish": ["salmon", "tuna", "cod", "sole", "sardines"],
+  "egg": ["egg", "egg yolk", "mayonnaise"],
+  "dairy": ["milk", "butter", "cream", "yogurt", "cheddar", "mozzarella", "parmesan", "feta", "halloumi", "ghee"],
+  "soy": ["soybeans", "tofu", "tempeh", "soy sauce", "edamame"],
+  "sesame": ["sesame seeds", "tahini"]
+}

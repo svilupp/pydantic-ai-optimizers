@@ -1,0 +1,61 @@
+[
+  {"name":"Spaghetti Aglio e Olio","description":"Garlicky olive-oil pasta.","cuisine":"italian","diet":"vegan","difficulty":"easy","prep_time_min":20,"calories":500,"cost":6.0,"ingredients":["wheat pasta","garlic","olive oil","chili flakes","parsley"]},
+  {"name":"Margherita Pizza","description":"Tomato, mozzarella, basil.","cuisine":"italian","diet":"vegetarian","difficulty":"medium","prep_time_min":30,"calories":700,"cost":8.0,"ingredients":["wheat flour","tomato","mozzarella","basil","olive oil"]},
+  {"name":"Tuna Puttanesca Pasta","description":"Tuna with olives and capers.","cuisine":"italian","diet":"pescatarian","difficulty":"medium","prep_time_min":30,"calories":650,"cost":10.0,"ingredients":["wheat pasta","tuna","tomato","olive","capers","garlic"]},
+  {"name":"Chicken Alfredo Pasta","description":"Creamy chicken pasta.","cuisine":"italian","diet":"omnivore","difficulty":"medium","prep_time_min":35,"calories":800,"cost":12.0,"ingredients":["wheat pasta","chicken breast","cream","parmesan","butter","garlic"]},
+  {"name":"Bistecca alla Fiorentina","description":"Thick-cut grilled steak.","cuisine":"italian","diet":"carnivore","difficulty":"easy","prep_time_min":25,"calories":700,"cost":18.0,"ingredients":["beef steak","butter","salt","pepper"]},
+
+  {"name":"Black Bean Tacos","description":"Quick vegan tacos.","cuisine":"mexican","diet":"vegan","difficulty":"easy","prep_time_min":15,"calories":450,"cost":8.0,"ingredients":["corn tortillas","black beans","avocado","tomato","onion","lime"]},
+  {"name":"Cheese Quesadilla","description":"Melted cheese in tortilla.","cuisine":"mexican","diet":"vegetarian","difficulty":"easy","prep_time_min":10,"calories":550,"cost":6.0,"ingredients":["wheat tortilla","cheddar","butter"]},
+  {"name":"Shrimp Tacos","description":"Crisp shrimp with slaw.","cuisine":"mexican","diet":"pescatarian","difficulty":"medium","prep_time_min":20,"calories":500,"cost":12.0,"ingredients":["corn tortillas","shrimp","cabbage","lime","cilantro"]},
+  {"name":"Beef Burrito","description":"Hearty stuffed burrito.","cuisine":"mexican","diet":"omnivore","difficulty":"medium","prep_time_min":25,"calories":800,"cost":11.0,"ingredients":["wheat tortilla","ground beef","rice","cheddar","sour cream"]},
+  {"name":"Carnitas Bowl","description":"Slow-cooked pork bowl.","cuisine":"mexican","diet":"carnivore","difficulty":"medium","prep_time_min":40,"calories":900,"cost":13.0,"ingredients":["pork shoulder","lard","salt","pepper"]},
+
+  {"name":"Chana Masala","description":"Spiced chickpea curry.","cuisine":"indian","diet":"vegan","difficulty":"medium","prep_time_min":35,"calories":500,"cost":7.0,"ingredients":["chickpeas","tomato","onion","garam masala","garlic","ginger"]},
+  {"name":"Paneer Tikka","description":"Grilled paneer skewers.","cuisine":"indian","diet":"vegetarian","difficulty":"medium","prep_time_min":45,"calories":600,"cost":9.0,"ingredients":["paneer","yogurt","spices","lemon"]},
+  {"name":"Salmon Curry","description":"Coconut salmon curry.","cuisine":"indian","diet":"pescatarian","difficulty":"medium","prep_time_min":40,"calories":700,"cost":14.0,"ingredients":["salmon","coconut milk","tomato","onion","spices"]},
+  {"name":"Butter Chicken","description":"Creamy tomato chicken.","cuisine":"indian","diet":"omnivore","difficulty":"hard","prep_time_min":50,"calories":850,"cost":13.0,"ingredients":["chicken","butter","cream","tomato","spices"]},
+  {"name":"Tandoori Lamb Chops","description":"Spiced grilled lamb.","cuisine":"indian","diet":"carnivore","difficulty":"hard","prep_time_min":60,"calories":750,"cost":18.0,"ingredients":["lamb chops","yogurt","spices","lemon"]},
+
+  {"name":"Vegetable Sushi Rolls","description":"Avocado cucumber maki.","cuisine":"japanese","diet":"vegan","difficulty":"medium","prep_time_min":50,"calories":400,"cost":9.0,"ingredients":["sushi rice","nori","avocado","cucumber","rice vinegar"]},
+  {"name":"Tamago Sushi","description":"Sweet egg omelet sushi.","cuisine":"japanese","diet":"vegetarian","difficulty":"medium","prep_time_min":40,"calories":500,"cost":8.0,"ingredients":["egg","sushi rice","nori","soy sauce"]},
+  {"name":"Salmon Teriyaki Bowl","description":"Glazed salmon over rice.","cuisine":"japanese","diet":"pescatarian","difficulty":"easy","prep_time_min":30,"calories":550,"cost":13.0,"ingredients":["salmon","soy sauce","rice","sugar","ginger"]},
+  {"name":"Chicken Katsu","description":"Crispy cutlet & rice.","cuisine":"japanese","diet":"omnivore","difficulty":"medium","prep_time_min":35,"calories":800,"cost":12.0,"ingredients":["chicken breast","wheat flour","egg","panko","oil"]},
+  {"name":"Wagyu Steak Bites","description":"Seared beef cubes.","cuisine":"japanese","diet":"carnivore","difficulty":"easy","prep_time_min":20,"calories":700,"cost":25.0,"ingredients":["beef steak","salt","pepper","butter"]},
+
+  {"name":"Thai Basil Tofu","description":"Spicy tofu stir-fry.","cuisine":"thai","diet":"vegan","difficulty":"easy","prep_time_min":20,"calories":500,"cost":10.0,"ingredients":["tofu","basil","soy sauce","garlic","chili","rice"]},
+  {"name":"Pad See Ew","description":"Wok-fried rice noodles.","cuisine":"thai","diet":"vegetarian","difficulty":"medium","prep_time_min":25,"calories":650,"cost":9.0,"ingredients":["rice noodles","egg","soy sauce","broccoli","garlic"]},
+  {"name":"Shrimp Pad Thai","description":"Tamarind noodles.","cuisine":"thai","diet":"pescatarian","difficulty":"medium","prep_time_min":30,"calories":700,"cost":12.0,"ingredients":["rice noodles","shrimp","egg","peanuts","soy sauce","bean sprouts"]},
+  {"name":"Chicken Green Curry","description":"Aromatic coconut curry.","cuisine":"thai","diet":"omnivore","difficulty":"medium","prep_time_min":35,"calories":750,"cost":11.0,"ingredients":["chicken","coconut milk","green curry paste","basil"]},
+  {"name":"Grilled Pork Skewers","description":"Simple pork skewers.","cuisine":"thai","diet":"carnivore","difficulty":"easy","prep_time_min":25,"calories":600,"cost":10.0,"ingredients":["pork","sugar","fish sauce"]},
+
+  {"name":"Mapo Tofu (Vegan)","description":"Spicy tofu with chili.","cuisine":"chinese","diet":"vegan","difficulty":"medium","prep_time_min":25,"calories":550,"cost":9.0,"ingredients":["tofu","chili bean paste","soy sauce","garlic","scallion"]},
+  {"name":"Egg Fried Rice","description":"Classic eggy rice.","cuisine":"chinese","diet":"vegetarian","difficulty":"easy","prep_time_min":15,"calories":650,"cost":6.0,"ingredients":["rice","egg","soy sauce","peas","scallion"]},
+  {"name":"Steamed Fish with Ginger","description":"Light soy-ginger fish.","cuisine":"chinese","diet":"pescatarian","difficulty":"easy","prep_time_min":25,"calories":500,"cost":13.0,"ingredients":["cod","soy sauce","ginger","scallion"]},
+  {"name":"Kung Pao Chicken","description":"Spicy peanut chicken.","cuisine":"chinese","diet":"omnivore","difficulty":"medium","prep_time_min":30,"calories":700,"cost":10.0,"ingredients":["chicken","peanuts","soy sauce","chili","garlic"]},
+  {"name":"Beef & Scallion Stir-Fry","description":"Quick beef stir-fry.","cuisine":"chinese","diet":"carnivore","difficulty":"easy","prep_time_min":20,"calories":720,"cost":12.0,"ingredients":["beef","soy sauce","scallion","garlic"]},
+
+  {"name":"Quinoa Kale Salad","description":"Citrus vinaigrette.","cuisine":"american","diet":"vegan","difficulty":"easy","prep_time_min":15,"calories":350,"cost":8.0,"ingredients":["quinoa","kale","olive oil","lemon","almonds"]},
+  {"name":"Mac and Cheese","description":"Cheesy baked pasta.","cuisine":"american","diet":"vegetarian","difficulty":"easy","prep_time_min":30,"calories":800,"cost":7.0,"ingredients":["wheat pasta","cheddar","milk","butter"]},
+  {"name":"Tuna Salad Sandwich","description":"Tuna on wheat bread.","cuisine":"american","diet":"pescatarian","difficulty":"easy","prep_time_min":10,"calories":600,"cost":6.0,"ingredients":["tuna","wheat bread","mayonnaise","lettuce"]},
+  {"name":"Cheeseburger","description":"Beef burger & cheese.","cuisine":"american","diet":"omnivore","difficulty":"easy","prep_time_min":20,"calories":900,"cost":9.0,"ingredients":["beef patty","wheat bun","cheddar","lettuce"]},
+  {"name":"Grilled Ribeye","description":"Butter-basted steak.","cuisine":"american","diet":"carnivore","difficulty":"easy","prep_time_min":20,"calories":800,"cost":20.0,"ingredients":["beef ribeye","butter","salt","pepper"]},
+
+  {"name":"Ratatouille","description":"Stewed Provençal veg.","cuisine":"french","diet":"vegan","difficulty":"hard","prep_time_min":60,"calories":300,"cost":10.0,"ingredients":["eggplant","zucchini","tomato","onion","olive oil"]},
+  {"name":"Quiche Lorraine","description":"Egg and cheese tart.","cuisine":"french","diet":"vegetarian","difficulty":"medium","prep_time_min":55,"calories":700,"cost":9.0,"ingredients":["egg","milk","cheese","wheat flour","butter"]},
+  {"name":"Sole Meunière","description":"Buttery lemon sole.","cuisine":"french","diet":"pescatarian","difficulty":"easy","prep_time_min":25,"calories":500,"cost":16.0,"ingredients":["sole","butter","lemon","wheat flour"]},
+  {"name":"Coq au Vin","description":"Braised chicken & wine.","cuisine":"french","diet":"omnivore","difficulty":"hard","prep_time_min":90,"calories":800,"cost":14.0,"ingredients":["chicken","bacon","wine","mushroom"]},
+  {"name":"Steak Tartare","description":"Raw beef with yolk.","cuisine":"french","diet":"carnivore","difficulty":"hard","prep_time_min":25,"calories":650,"cost":18.0,"ingredients":["beef","egg yolk","capers"]},
+
+  {"name":"Falafel Wrap","description":"Chickpea wrap with tahini.","cuisine":"middle eastern","diet":"vegan","difficulty":"medium","prep_time_min":30,"calories":650,"cost":9.0,"ingredients":["wheat pita","chickpeas","tahini","lettuce","tomato"]},
+  {"name":"Halloumi Salad","description":"Grilled halloumi & greens.","cuisine":"middle eastern","diet":"vegetarian","difficulty":"easy","prep_time_min":20,"calories":600,"cost":11.0,"ingredients":["halloumi","lettuce","tomato","olive oil"]},
+  {"name":"Salmon Shawarma","description":"Spiced salmon fillets.","cuisine":"middle eastern","diet":"pescatarian","difficulty":"medium","prep_time_min":30,"calories":600,"cost":15.0,"ingredients":["salmon","spices","lemon","yogurt"]},
+  {"name":"Chicken Shawarma Plate","description":"Marinated chicken slices.","cuisine":"middle eastern","diet":"omnivore","difficulty":"medium","prep_time_min":45,"calories":700,"cost":12.0,"ingredients":["chicken","spices","yogurt","garlic"]},
+  {"name":"Lamb Kebab","description":"Skewered lamb cubes.","cuisine":"middle eastern","diet":"carnivore","difficulty":"easy","prep_time_min":30,"calories":700,"cost":14.0,"ingredients":["lamb","spices","salt"]},
+
+  {"name":"Greek Salad","description":"Feta, olives, veg.","cuisine":"mediterranean","diet":"vegetarian","difficulty":"easy","prep_time_min":10,"calories":420,"cost":7.0,"ingredients":["cucumber","tomato","feta","olive","olive oil"]},
+  {"name":"Lentil Soup","description":"Hearty lemony lentils.","cuisine":"mediterranean","diet":"vegan","difficulty":"easy","prep_time_min":35,"calories":380,"cost":5.0,"ingredients":["lentils","carrot","onion","olive oil","lemon"]},
+  {"name":"Grilled Sardines","description":"Simply grilled sardines.","cuisine":"mediterranean","diet":"pescatarian","difficulty":"easy","prep_time_min":20,"calories":500,"cost":9.0,"ingredients":["sardines","lemon","olive oil","salt"]},
+  {"name":"Mixed Grill Plate","description":"Assorted meats platter.","cuisine":"mediterranean","diet":"omnivore","difficulty":"medium","prep_time_min":40,"calories":900,"cost":16.0,"ingredients":["chicken","beef","lamb","spices"]},
+  {"name":"Carnivore Lamb Chops","description":"Pan-seared lamb chops.","cuisine":"mediterranean","diet":"carnivore","difficulty":"easy","prep_time_min":25,"calories":750,"cost":18.0,"ingredients":["lamb","butter","salt","pepper"]}
+]
