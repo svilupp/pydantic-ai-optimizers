@@ -1,0 +1,118 @@
+Below are several tips for optimizing prompts for GPT-5 series of models.
+
+* **Dial eagerness DOWN (fast answers, fewer tools)**
+
+  * Lower `reasoning_effort`; give tight search rules + a hard tool budget.
+  * Example:
+
+    ```xml
+    <context_gathering>
+      Goal: get enough context fast; stop early.
+      Depth: minimal. Early stop when top hits converge (~70%).
+      Budget: max 2 tool calls; prefer acting over more search.
+      Escape: proceed even if not fully certain.
+    </context_gathering>
+    ```
+
+* **Dial eagerness UP (autonomous completion)**
+
+  * Raise `reasoning_effort`; add persistence rules to avoid hand-backs.
+  * Example:
+
+    ```xml
+    <persistence>
+      Keep going until fully solved. Don't ask to clarify—decide, proceed, then document assumptions.
+    </persistence>
+    ```
+
+* **Narrate with tool preambles (plan → progress → wrap-up)**
+
+  * Improves UX on long rollouts.
+  * Example:
+
+    ```xml
+    <tool_preambles>
+      Start: restate goal. Plan: steps 1..N. During: brief step updates.
+      End: "Done" summary distinct from plan.
+    </tool_preambles>
+    ```
+
+* **Choose reasoning effort + split turns**
+
+  * Use **high** for complex multi-step; break separable tasks across turns.
+  * Example:
+
+    ```txt
+    Turn 1: plan & gather | Turn 2: implement | Turn 3: validate & summarize
+    ```
+
+* **Greenfield frontend defaults (better outputs out-of-box)**
+
+  * Next.js (TS), React, HTML • Tailwind + shadcn/Radix • Lucide/Heroicons • Motion • Inter/Geist/Manrope.
+
+* **Zero-to-one apps via self-reflection rubric**
+
+  * Ask the model to invent & use an internal excellence rubric before coding.
+  * Example:
+
+    ```xml
+    <self_reflection>
+      Think up a 5–7-cat rubric; iterate until top marks across all cats.
+    </self_reflection>
+    ```
+
+* **Blend into existing codebases (house style rules)**
+
+  * Feed principles, stack defaults, structure, and UI/UX rules.
+  * Example (abridged):
+
+    ```xml
+    <code_editing_rules>
+      Principles: clarity, reuse, consistency.
+      Stack: Next.js+TS, Tailwind, shadcn, Zustand.
+      Structure: /app /(pages) /components /lib /stores /types
+      UX: fixed spacing; 1 neutral + ≤2 accents; skeletons on fetch.
+    </code_editing_rules>
+    ```
+
+* **Balance verbosity & autonomy (Cursor pattern)**
+
+  * Keep text terse, code verbose & readable; be proactively edit-oriented.
+  * Example:
+
+    ```txt
+    params.verbosity=low
+    "In code tools: use high verbosity, clear names, comments. Propose edits proactively; users can reject."
+    ```
+
+* **Instruction hygiene (resolve contradictions early)**
+
+  * Define precedence & exceptions (e.g., emergencies break lookup).
+  * Example:
+
+    ```diff
+    - Auto-assign same-day slot without contacting patient.
+    + Contact patient, confirm consent; then auto-assign earliest slot.
+    + Emergency: skip lookup; instruct 911 immediately.
+    ```
+
+* **Minimal reasoning mode playbook (latency win)**
+
+  * Add explicit planning, preambles, persistence, and disambiguated tool rules.
+  * Example:
+
+    ```xml
+    <planning>
+      Decompose tasks; verify each subtask complete before ending turn.
+      Provide brief bullet rationale at answer start.
+    </planning>
+    ```
+
+* **Markdown control (only when wanted)**
+
+  * Opt-in with lightweight guardrails; re-assert every 3–5 messages if needed.
+  * Example:
+
+    ```txt
+    "Use Markdown only when semantically correct (inline code, lists, tables, fences)."
+    ```

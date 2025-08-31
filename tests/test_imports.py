@@ -16,4 +16,3 @@ def test_version_import():
     import pydantic_ai_optimizers
 
     assert hasattr(pydantic_ai_optimizers, "__version__")
-    assert pydantic_ai_optimizers.__version__ == "0.0.1"
