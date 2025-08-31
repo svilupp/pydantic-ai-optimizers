@@ -6,12 +6,15 @@ from collections.abc import Awaitable, Callable, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from statistics import mean
-from typing import Any
+import inspect
+from typing import Any, Optional
 
 import textprompts  # type: ignore
 from loguru import logger  # type: ignore
+from pydantic_ai import Agent  # type: ignore
 from pydantic_evals import Dataset  # type: ignore
 from pydantic_evals.reporting import ReportCase  # type: ignore
+from .agents.reflection_agent import make_reflection_agent
 
 RunCase = Callable[[str, Any], Awaitable[Any]]
 
@@ -65,7 +68,7 @@ class Optimizer:
         self,
         dataset: Dataset,
         run_case: RunCase,
-        reflection_agent: Any,
+        reflection_agent: Optional[Agent]= None,
         pool_dir: str | Path = "prompt_pool",
         minibatch_size: int = 4,
         max_pool_size: int = 16,
@@ -74,7 +77,7 @@ class Optimizer:
     ) -> None:
         self.dataset = dataset
         self.run_case = run_case
-        self.reflection_agent = reflection_agent
+        self.reflection_agent = reflection_agent if reflection_agent is not None else make_reflection_agent()
         self.pool_dir = Path(pool_dir)
         self.pool_dir.mkdir(parents=True, exist_ok=True)
         self.minibatch_size = minibatch_size
@@ -340,8 +343,12 @@ class Optimizer:
         return _write_new_prompt_file(new_text, self.pool_dir, len(self.candidates))
 
     def _evaluate_full_sync(self, prompt_path: Path) -> list[CaseEval]:
-        def task_fn(user_text: str) -> Any:
-            return self.run_case(str(prompt_path), user_text)
+        if inspect.iscoroutinefunction(self.run_case):
+            async def task_fn(user_text: str) -> Any:
+                return await self.run_case(str(prompt_path), user_text)
+        else:
+            def task_fn(user_text: str) -> Any:
+                return self.run_case(str(prompt_path), user_text)
 
         report = self.dataset.evaluate_sync(task_fn)
         rows: list[CaseEval] = []

@@ -4,7 +4,7 @@ build-backend = "uv_build"
 
 [project]
 name = "pydantic-ai-optimizers"
-version = "0.0.1"
+version = "0.0.2"
 description = "A library for optimizing PydanticAI agents prompts through iterative improvement and evaluation, built on top of PydanticAI + Pydantic Evals."
 readme = "README.md"
 requires-python = ">=3.11"

@@ -25,7 +25,7 @@ The core insight is that you don't lose learning between iterations, and the wei
 ### Installation
 
 ```bash
-uv pip install -e .
+uv sync
 ```
 
 Or for running the examples:
@@ -50,7 +50,7 @@ from your_domain import make_run_case, make_reflection_agent, build_dataset
 
 # Set up your domain-specific components
 dataset = build_dataset("your_cases.json")
-run_case = make_run_case()  # Function that runs your agent with a prompt
+run_case = make_run_case()  # Function that runs your agent with a prompt, ideally async
 reflection_agent = make_reflection_agent()  # Agent that improves prompts
 
 # Optimize

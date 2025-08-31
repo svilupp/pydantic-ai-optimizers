@@ -1,0 +1,393 @@
+[
+    {
+      "id": "billing_double_charge_easy",
+      "message": "My credit card was charged twice for order #SH12345. Please refund the duplicate charge.",
+      "expected": {
+        "category": "billing",
+        "urgency": "normal",
+        "surface": "unknown",
+        "component": null,
+        "identifiers": ["SH12345"]
+      },
+      "difficulty": "easy",
+      "notes": "Clear billing issue with order reference"
+    },
+    {
+      "id": "auth_password_reset_easy",
+      "message": "I can't log into my account. When I try to reset my password, I don't get the email.",
+      "expected": {
+        "category": "authentication",
+        "urgency": "normal",
+        "surface": "unknown",
+        "component": "password_reset",
+        "identifiers": []
+      },
+      "difficulty": "easy",
+      "notes": "Straightforward authentication issue"
+    },
+    {
+      "id": "performance_slow_checkout_easy",
+      "message": "The checkout page is loading super slowly on my computer. It takes like 2 minutes just to enter my address.",
+      "expected": {
+        "category": "performance",
+        "urgency": "normal",
+        "surface": "web",
+        "component": "checkout",
+        "identifiers": []
+      },
+      "difficulty": "easy",
+      "notes": "Clear performance issue on web checkout"
+    },
+    {
+      "id": "ui_mobile_button_easy",
+      "message": "The 'Add to Cart' button doesn't work on my iPhone app. I tap it but nothing happens.",
+      "expected": {
+        "category": "ui_bug",
+        "urgency": "high",
+        "surface": "ios",
+        "component": "add_to_cart",
+        "identifiers": []
+      },
+      "difficulty": "easy",
+      "notes": "Clear UI bug on iOS platform"
+    },
+    {
+      "id": "shipping_lost_package_easy",
+      "message": "My package with tracking #1Z12345 was supposed to arrive yesterday but it's marked as delivered and I never received it.",
+      "expected": {
+        "category": "shipping",
+        "urgency": "high",
+        "surface": "unknown",
+        "component": null,
+        "identifiers": ["1Z12345"]
+      },
+      "difficulty": "easy",
+      "notes": "Clear shipping issue with tracking number"
+    },
+    {
+      "id": "account_profile_update_easy",
+      "message": "I'm trying to update my shipping address in my profile but the save button just spins forever.",
+      "expected": {
+        "category": "account",
+        "urgency": "normal",
+        "surface": "unknown",
+        "component": "profile",
+        "identifiers": []
+      },
+      "difficulty": "easy",
+      "notes": "Account management issue"
+    },
+    {
+      "id": "feature_size_recommendation_easy",
+      "message": "Do you have any plans to add size recommendations? I always have to guess what size to order.",
+      "expected": {
+        "category": "feature_request",
+        "urgency": "low",
+        "surface": "unknown",
+        "component": "sizing",
+        "identifiers": []
+      },
+      "difficulty": "easy",
+      "notes": "Clear feature request"
+    },
+    {
+      "id": "docs_return_policy_easy",
+      "message": "What's your return policy? I can't find it anywhere on the site.",
+      "expected": {
+        "category": "docs",
+        "urgency": "low",
+        "surface": "web",
+        "component": null,
+        "identifiers": []
+      },
+      "difficulty": "easy",
+      "notes": "Documentation request"
+    },
+    {
+      "id": "other_gift_card_easy",
+      "message": "How do I check my gift card balance? I have a $50 gift card from Christmas.",
+      "expected": {
+        "category": "other",
+        "urgency": "low",
+        "surface": "unknown",
+        "component": "gift_card",
+        "identifiers": []
+      },
+      "difficulty": "easy",
+      "notes": "General inquiry about gift cards"
+    },
+    {
+      "id": "billing_promo_code_easy",
+      "message": "The promo code SAVE20 isn't working at checkout. It says it's invalid but I got it from your email newsletter.",
+      "expected": {
+        "category": "billing",
+        "urgency": "normal",
+        "surface": "unknown",
+        "component": "checkout",
+        "identifiers": ["SAVE20"]
+      },
+      "difficulty": "easy",
+      "notes": "Promo code issue with specific code"
+    },
+    {
+      "id": "auth_2fa_medium",
+      "message": "Hi there! I'm having issues with two-factor auth. My phone number changed and now I can't get the SMS codes. I tried using the backup codes but those aren't working either. Error message says 'Invalid verification code' every time. Can you help me regain access to my account?",
+      "expected": {
+        "category": "authentication",
+        "urgency": "high",
+        "surface": "unknown",
+        "component": "two_factor_auth",
+        "identifiers": ["Invalid verification code"]
+      },
+      "difficulty": "medium",
+      "notes": "Complex auth issue with multiple failed attempts"
+    },
+    {
+      "id": "performance_search_filters_medium",
+      "message": "The search functionality is acting weird. When I try to filter by size and color at the same time, the page just keeps loading and never shows results. This happens both on my laptop and tablet. The individual filters work fine though.",
+      "expected": {
+        "category": "performance",
+        "urgency": "normal",
+        "surface": "web",
+        "component": "search_filters",
+        "identifiers": []
+      },
+      "difficulty": "medium",
+      "notes": "Performance issue with specific combination of filters"
+    },
+    {
+      "id": "ui_cart_android_medium",
+      "message": "Something's wrong with the shopping cart on Android. Items keep disappearing randomly, especially when I switch between apps. Sometimes when I come back to StyleHaven, my cart is completely empty even though I just added 5 items. Very frustrating!",
+      "expected": {
+        "category": "ui_bug",
+        "urgency": "high",
+        "surface": "android",
+        "component": "shopping_cart",
+        "identifiers": []
+      },
+      "difficulty": "medium",
+      "notes": "Intermittent cart issue on Android platform"
+    },
+    {
+      "id": "shipping_international_medium",
+      "message": "I ordered 3 weeks ago to Germany and the tracking shows it's stuck in customs. The tracking number is DHL123456789. Customer service in Germany said to contact you directly. What can we do to get this moving? I need the dress for an event next week.",
+      "expected": {
+        "category": "shipping",
+        "urgency": "high",
+        "surface": "unknown",
+        "component": null,
+        "identifiers": ["DHL123456789"]
+      },
+      "difficulty": "medium",
+      "notes": "International shipping issue with urgency"
+    },
+    {
+      "id": "account_order_history_medium",
+      "message": "My order history is showing weird data. Some orders from last year are missing, but I can see random orders from 2021 that I never made. Also my loyalty points seem wrong - it shows 50 points but I should have way more based on my purchases. Can you audit my account?",
+      "expected": {
+        "category": "account",
+        "urgency": "normal",
+        "surface": "unknown",
+        "component": "account_data",
+        "identifiers": []
+      },
+      "difficulty": "medium",
+      "notes": "Complex account data integrity issue"
+    },
+    {
+      "id": "billing_subscription_medium",
+      "message": "I signed up for StyleHaven Plus last month but I'm being charged $29.99 instead of the advertised $19.99. My payment method shows charges on Jan 15, Feb 15, and now March 15. I have screenshots of the original pricing. Please fix this and refund the difference.",
+      "expected": {
+        "category": "billing",
+        "urgency": "normal",
+        "surface": "unknown",
+        "component": "subscription",
+        "identifiers": []
+      },
+      "difficulty": "medium",
+      "notes": "Subscription billing discrepancy with specific amounts"
+    },
+    {
+      "id": "feature_virtual_tryon_medium",
+      "message": "Love the new AR try-on feature! But could you add support for sunglasses and jewelry too? Right now it only works for makeup and hats. Also it would be amazing if you could save the virtual try-on photos to share with friends before buying.",
+      "expected": {
+        "category": "feature_request",
+        "urgency": "low",
+        "surface": "unknown",
+        "component": "ar_tryon",
+        "identifiers": []
+      },
+      "difficulty": "medium",
+      "notes": "Feature enhancement request with specific details"
+    },
+    {
+      "id": "docs_care_instructions_medium",
+      "message": "I bought a silk blouse (item #SLK456) and the care label is partially torn. Can you send me the complete care instructions? Also do you have a general guide for caring for silk items? The product page just says 'dry clean only' but I'd like more details.",
+      "expected": {
+        "category": "docs",
+        "urgency": "low",
+        "surface": "web",
+        "component": null,
+        "identifiers": ["SLK456"]
+      },
+      "difficulty": "medium",
+      "notes": "Documentation request with specific item reference"
+    },
+    {
+      "id": "other_loyalty_program_medium",
+      "message": "Question about the loyalty program - I'm Silver tier but when will I hit Gold? The app shows different point requirements than the website. App says I need 500 more points, website says 750. Which one is correct? Also when do points expire?",
+      "expected": {
+        "category": "account",
+        "urgency": "low",
+        "surface": "unknown",
+        "component": "loyalty_program",
+        "identifiers": []
+      },
+      "difficulty": "medium",
+      "notes": "Loyalty program inquiry with conflicting information"
+    },
+    {
+      "id": "ui_checkout_validation_medium",
+      "message": "The checkout form is super picky about address formatting. It keeps rejecting my apartment number format (Apt 4B) and wants me to write it as (#4B) or (Unit 4B). But then my credit card billing address doesn't match and payment fails. This is really annoying!",
+      "expected": {
+        "category": "ui_bug",
+        "urgency": "high",
+        "surface": "web",
+        "component": "checkout",
+        "identifiers": []
+      },
+      "difficulty": "medium",
+      "notes": "Form validation issue affecting payment"
+    },
+    {
+      "id": "performance_api_timeout_hard",
+      "message": "Getting intermittent issues when browsing. Sometimes pages load fine, other times I get a blank screen or it just hangs. Developer console shows some 504 errors on api/v2/products/search endpoint. Happens mostly during evening hours. Using Chrome on Mac.",
+      "expected": {
+        "category": "performance",
+        "urgency": "normal",
+        "surface": "api",
+        "component": "search",
+        "identifiers": ["504", "api/v2/products/search"]
+      },
+      "difficulty": "hard",
+      "notes": "Technical user reporting API issues with specific endpoint"
+    },
+    {
+      "id": "auth_security_breach_hard",
+      "message": "URGENT - I think my account was hacked. Got emails about orders I didn't place to addresses I don't recognize. Changed my password already but now can't access my account at all - it's locked. The orders are #SH78901 and #SH78902. Please investigate ASAP and cancel those orders if they're fraudulent.",
+      "expected": {
+        "category": "authentication",
+        "urgency": "critical",
+        "surface": "unknown",
+        "component": "security",
+        "identifiers": ["SH78901", "SH78902"]
+      },
+      "difficulty": "hard",
+      "notes": "Security incident requiring urgent attention"
+    },
+    {
+      "id": "billing_complex_refund_hard",
+      "message": "Need help with a complicated refund situation. I returned 3 items from order #SH55555 (got return confirmation #RT123), but only 2 items were refunded. The silk scarf wasn't refunded because it was supposedly 'damaged' but it was in perfect condition when I sent it back. I have photos. Also the refund amount is wrong - should be $89.99 but I only got $67.49. What happened to my scarf and the missing money?",
+      "expected": {
+        "category": "billing",
+        "urgency": "high",
+        "surface": "unknown",
+        "component": "returns",
+        "identifiers": ["SH55555", "RT123"]
+      },
+      "difficulty": "hard",
+      "notes": "Complex return/refund dispute with multiple issues"
+    },
+    {
+      "id": "ui_mobile_responsive_hard",
+      "message": "The mobile site is really broken on my Samsung Galaxy S23. Product images are cut off, buttons are too small to tap accurately, and the size chart doesn't fit on screen so I can't scroll to see all sizes. It's better in landscape mode but still not great. Desktop site works fine in mobile browser though.",
+      "expected": {
+        "category": "ui_bug",
+        "urgency": "normal",
+        "surface": "mobile",
+        "component": "mobile_responsive",
+        "identifiers": []
+      },
+      "difficulty": "hard",
+      "notes": "Mobile responsive design issues on specific device"
+    },
+    {
+      "id": "shipping_damaged_investigation_hard",
+      "message": "Package arrived damaged (tracking #FX987654321). Box was crushed and the shoes inside were scuffed. I need a replacement but customer service said it's shipping damage so I have to file with FedEx directly. But FedEx says since it's packaged goods I need to go through the retailer. Who's responsible here? I just want my shoes replaced or refunded, not to be bounced between companies.",
+      "expected": {
+        "category": "shipping",
+        "urgency": "high",
+        "surface": "unknown",
+        "component": "damage_claims",
+        "identifiers": ["FX987654321"]
+      },
+      "difficulty": "hard",
+      "notes": "Shipping damage with responsibility dispute"
+    },
+    {
+      "id": "account_data_sync_hard",
+      "message": "My account data is totally out of sync between platforms. Web shows I have 3 items in wishlist, iOS app shows 7 items (some I deleted months ago), Android app shows empty wishlist. Addresses are different across platforms too. Tried logging out/in everywhere but nothing fixes it. Using same email account everywhere.",
+      "expected": {
+        "category": "account",
+        "urgency": "normal",
+        "surface": "unknown",
+        "component": "data_sync",
+        "identifiers": []
+      },
+      "difficulty": "hard",
+      "notes": "Cross-platform data synchronization issues"
+    },
+    {
+      "id": "feature_accessibility_hard",
+      "message": "I'm visually impaired and use screen readers. The website has improved but there are still issues. Product images don't have alt text, the size selector isn't properly labeled for screen readers, and I can't navigate the mega menu with keyboard only. Would love to see better ARIA labels and keyboard navigation support.",
+      "expected": {
+        "category": "ui_bug",
+        "urgency": "normal",
+        "surface": "web",
+        "component": "accessibility",
+        "identifiers": []
+      },
+      "difficulty": "hard",
+      "notes": "Accessibility feature request with technical details"
+    },
+    {
+      "id": "docs_missing_integration_hard",
+      "message": "I'm a developer trying to integrate with your API for our company's employee clothing allowance program. The documentation at docs.stylehaven.com/api seems outdated - references endpoints that return 404 errors. Specifically /api/v1/bulk-orders and /api/v1/corporate-accounts. Are these still available? Need current API docs for enterprise features.",
+      "expected": {
+        "category": "docs",
+        "urgency": "normal",
+        "surface": "api",
+        "component": "api_documentation",
+        "identifiers": ["404", "/api/v1/bulk-orders", "/api/v1/corporate-accounts"]
+      },
+      "difficulty": "hard",
+      "notes": "Developer requesting API documentation updates"
+    },
+    {
+      "id": "other_business_partnership_hard",
+      "message": "I run a boutique in downtown Chicago and I'm interested in carrying some of your exclusive pieces. Do you have a wholesale or retail partnership program? If so, what are the minimum order quantities and terms? Also wondering about drop shipping options for items we don't stock. Who should I contact about business partnerships?",
+      "expected": {
+        "category": "other",
+        "urgency": "low",
+        "surface": "unknown",
+        "component": "business_partnerships",
+        "identifiers": []
+      },
+      "difficulty": "hard",
+      "notes": "Business inquiry requiring different department"
+    },
+    {
+      "id": "billing_tax_exemption_hard",
+      "message": "I have a tax exempt certificate for my non-profit organization (EIN: 12-3456789). How do I apply this to my StyleHaven account? I made several purchases last month (orders #SH11111, #SH22222, #SH33333) before setting this up. Can those be retroactively adjusted for tax exemption? Need documentation for our accounting department.",
+      "expected": {
+        "category": "billing",
+        "urgency": "normal",
+        "surface": "unknown",
+        "component": "tax_exemption",
+        "identifiers": ["12-3456789", "SH11111", "SH22222", "SH33333"]
+      },
+      "difficulty": "hard",
+      "notes": "Tax exemption request with multiple order references"
+    }
+  ]
+  
