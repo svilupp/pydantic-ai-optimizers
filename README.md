@@ -25,19 +25,42 @@ The core insight is that you don't lose learning between iterations, and the wei
 ### Installation
 
 ```bash
-uv pip install -e .
+uv sync
 ```
 
-Or for running the examples:
+Or run an example directly from the project root:
 ```bash
-uv run python examples/chef/optimize.py
+uv run examples/chef/optimize.py
+uv run examples/customer_support/optimize.py
 ```
 
 ### Run the Chef Example
 
 ```bash
-cd examples/chef
-uv run python optimize.py
+uv run examples/chef/optimize.py
+```
+
+### Run the Customer Support Example
+
+```bash
+uv run examples/customer_support/optimize.py
+```
+
+## Repository Structure
+
+```
+.
+├── src/pydantic_ai_optimizers/
+│   ├── agents/
+│   │   └── reflection_agent.py
+│   ├── optimizer.py
+│   ├── config.py
+│   └── cli.py
+├── examples/
+│   ├── chef/
+│   └── customer_support/
+├── tests/
+└── docs/
 ```
 
 This will optimize a chef assistant prompt that helps users find recipes while avoiding allergens. You'll see the optimization process with real-time feedback and the final best prompt.
@@ -45,25 +68,49 @@ This will optimize a chef assistant prompt that helps users find recipes while a
 ### Basic Usage in Your Project
 
 ```python
-from pydantic_ai_optimizers import Optimizer
-from your_domain import make_run_case, make_reflection_agent, build_dataset
+from pydantic_ai_optimizers import Optimizer, make_reflection_agent
+from your_domain import create_your_agent, build_dataset, YourInputType, YourOutputType
 
-# Set up your domain-specific components
+# CRITICAL: Define your run_case function with the correct signature
+async def run_case(prompt_file: str, user_input: YourInputType) -> YourOutputType:
+    """
+    Run your agent with a specific prompt file and user input.
+    
+    Args:
+        prompt_file: ABSOLUTE path to the prompt file (e.g., "/path/to/prompts/candidate_001.txt")
+        user_input: The input from your dataset cases
+    
+    Returns:
+        The agent's output that will be evaluated
+    """
+    # Load the prompt and create agent
+    agent = create_your_agent(prompt_file=prompt_file, model="your-model")
+    result = await agent.run(user_input.message)  # Or however you pass inputs
+    return result.output
+
+# Set up your dataset
 dataset = build_dataset("your_cases.json")
-run_case = make_run_case()  # Function that runs your agent with a prompt
-reflection_agent = make_reflection_agent()  # Agent that improves prompts
 
-# Optimize
+# Optional: Customize the reflection agent
+reflection_agent = make_reflection_agent(
+    model="openai:gpt-5-mini",  # Use a different model
+    special_instructions="Focus on conciseness and clarity"  # Add custom instructions
+)
+# Or use the default: reflection_agent = None (will use make_reflection_agent() internally)
+
+# Create optimizer
 optimizer = Optimizer(
     dataset=dataset,
-    run_case=run_case,
-    reflection_agent=reflection_agent,
+    run_case=run_case,  # Your async function with the signature above
+    reflection_agent=reflection_agent,  # Optional, uses default if None
 )
 
+# Run optimization
 best = await optimizer.optimize(
-    seed_prompt_file="seed.txt",
+    seed_prompt_file=Path("prompts/seed.txt"),
     full_validation_budget=20
 )
+print(f"Best prompt: {best.prompt_path}")
 ```
 
 ## How It Works
@@ -105,28 +152,84 @@ your_domain/
 
 **Agent** (`agent.py`):
 ```python
-def make_run_case():
-    async def run_case(prompt_file: str, user_input: str):
-        # Load prompt, run your agent, return results
-        pass
-    return run_case
+# CRITICAL: Your run_case function must have this exact signature
+async def run_case(prompt_file: str, user_input: YourInputType) -> YourOutputType:
+    """
+    Run your agent with a specific prompt file and user input.
+    
+    Args:
+        prompt_file: ABSOLUTE path to the prompt file (optimizer passes full paths)
+        user_input: Input from your dataset cases (your domain-specific type)
+    
+    Returns:
+        Agent output that matches your evaluators' expectations
+    """
+    # Example implementation:
+    agent = create_your_agent(prompt_file=prompt_file, model="gpt-4")
+    result = await agent.run(user_input.message)
+    return result.output
 
-def make_reflection_agent():
-    # Return agent that improves prompts based on feedback
-    pass
+# Optional: Customize the reflection agent
+# If you don't provide one, the optimizer uses make_reflection_agent() internally
+def create_custom_reflection_agent():
+    from pydantic_ai_optimizers import make_reflection_agent
+    
+    return make_reflection_agent(
+        model="gpt-4o",  # Your preferred model for reflection
+        special_instructions="""
+        Focus on:
+        - Brevity and clarity
+        - Domain-specific accuracy
+        - Better error handling
+        """  # Custom instructions for prompt improvement
+    )
 ```
 
 **Optimization** (`optimize.py`):
 ```python
+from pydantic_ai_optimizers import Optimizer, make_reflection_agent
+from pathlib import Path
+
 def build_dataset(cases_file):
-    # Load test cases and evaluators
+    # Load test cases and evaluators using pydantic-evals
     # Return dataset that can evaluate your agent's outputs
     pass
 
-def main():
-    # Set up dataset, run_case, reflection_agent
-    # Create optimizer and run optimization loop
-    pass
+async def main():
+    # Set up dataset
+    dataset = build_dataset("cases.yaml")
+    
+    # Your run_case function (defined above)
+    # No need to wrap it - pass it directly
+    
+    # Optional: Use custom reflection agent
+    reflection_agent = make_reflection_agent(
+        model="gpt-4o",
+        special_instructions="Focus on accuracy and brevity"
+    )
+    # Or use default: reflection_agent = None
+    
+    # Create optimizer
+    optimizer = Optimizer(
+        dataset=dataset,
+        run_case=run_case,  # Your async function
+        reflection_agent=reflection_agent,  # Optional
+        pool_dir=Path("prompt_pool"),
+        minibatch_size=4,
+        max_pool_size=16,
+    )
+    
+    # Run optimization
+    best = await optimizer.optimize(
+        seed_prompt_file=Path("prompts/seed.txt"),
+        full_validation_budget=20
+    )
+    
+    print(f"Best prompt saved to: {best.prompt_path}")
+
+if __name__ == "__main__":
+    import asyncio
+    asyncio.run(main())
 ```
 
 ### 3. Run Optimization
@@ -158,14 +261,82 @@ Provides utilities that make PydanticAI much more convenient:
 
 These integrations save significant development time when building optimization pipelines.
 
+## Reflection Agent Options
+
+The optimizer uses a reflection agent to generate improved prompts based on evaluation feedback. You have several options:
+
+### Use Default Reflection Agent
+```python
+# Pass None or omit the parameter - uses make_reflection_agent() with defaults
+optimizer = Optimizer(
+    dataset=dataset,
+    run_case=run_case,
+    # reflection_agent=None,  # Uses default
+)
+```
+
+### Customize the Model
+```python
+from pydantic_ai_optimizers import make_reflection_agent
+
+# Use a different model for reflection
+reflection_agent = make_reflection_agent(model="openai:gpt-5-mini")
+
+optimizer = Optimizer(
+    dataset=dataset,
+    run_case=run_case,
+    reflection_agent=reflection_agent,
+)
+```
+
+### Add Special Instructions (e.g., GPT-5 prompting tips)
+```python
+import textprompts
+from pathlib import Path
+from pydantic_ai_optimizers import make_reflection_agent
+
+# Load GPT-5 prompting tips from a file and pass to the reflection agent
+tips = str(textprompts.load_prompt(
+    Path("examples/customer_support/prompts/gpt5_tips.txt")
+))
+
+reflection_agent = make_reflection_agent(
+    model="openai:gpt-5-mini",
+    special_instructions=tips,
+)
+
+optimizer = Optimizer(
+    dataset=dataset,
+    run_case=run_case,
+    reflection_agent=reflection_agent,
+)
+```
+
+### Bring Your Own Reflection Agent
+```python
+from pydantic_ai import Agent
+
+# Create completely custom reflection agent
+reflection_agent = Agent(
+    model="your-model",
+    instructions="Your custom reflection instructions..."
+)
+
+optimizer = Optimizer(
+    dataset=dataset,
+    run_case=run_case,
+    reflection_agent=reflection_agent,
+)
+```
+
 ## Configuration
 
 Set up through environment variables or configuration files:
 
 ```bash
 export OPENAI_API_KEY="your-key"
-export REFLECTION_MODEL="openai:gpt-4o"  
-export AGENT_MODEL="openai:gpt-4o-mini"
+export REFLECTION_MODEL="openai:gpt-5"  
+export AGENT_MODEL="openai:gpt-5-nano"
 export VALIDATION_BUDGET=20
 export MAX_POOL_SIZE=16
 ```

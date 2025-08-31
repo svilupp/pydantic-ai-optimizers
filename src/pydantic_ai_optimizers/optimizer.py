@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import inspect
 import random
 import uuid
 from collections.abc import Awaitable, Callable, Sequence
@@ -10,8 +11,11 @@ from typing import Any
 
 import textprompts  # type: ignore
 from loguru import logger  # type: ignore
+from pydantic_ai import Agent  # type: ignore
 from pydantic_evals import Dataset  # type: ignore
 from pydantic_evals.reporting import ReportCase  # type: ignore
+
+from .agents.reflection_agent import make_reflection_agent
 
 RunCase = Callable[[str, Any], Awaitable[Any]]
 
@@ -59,22 +63,77 @@ class Optimizer:
 
     The system is designed to work with any evaluation framework that provides
     per-case scores and reasons via a simple interface.
+
+    Example:
+        ```python
+        # Define your async run_case function with the required signature
+        async def run_case(prompt_file: str, user_input: YourInputType) -> YourOutputType:
+            # IMPORTANT: prompt_file is an absolute path to the prompt file
+            agent = create_your_agent(prompt_file=prompt_file)
+            result = await agent.run(user_input.message)
+            return result.output
+
+        # Create optimizer
+        optimizer = Optimizer(
+            dataset=your_dataset,
+            run_case=run_case,
+            reflection_agent=make_reflection_agent(),  # Optional: uses default if None
+        )
+
+        # Run optimization
+        best = await optimizer.optimize(
+            seed_prompt_file=Path("prompts/seed.txt"),
+            full_validation_budget=20
+        )
+        ```
     """
 
     def __init__(
         self,
         dataset: Dataset,
         run_case: RunCase,
-        reflection_agent: Any,
+        reflection_agent: Agent | None = None,
         pool_dir: str | Path = "prompt_pool",
         minibatch_size: int = 4,
         max_pool_size: int = 16,
         seed: int = 0,
         keep_failed_mutations: bool = False,
     ) -> None:
+        """
+        Initialize the Optimizer.
+
+        Args:
+            dataset: pydantic-evals Dataset containing test cases and evaluators.
+            run_case: Async function with signature (prompt_file: str, user_input: Any) -> Any.
+                CRITICAL: The first parameter 'prompt_file' receives an ABSOLUTE path to the
+                prompt file to use. Your function should load this prompt and create an agent
+                with it. The second parameter is the user input from your dataset cases.
+            reflection_agent: Optional Agent for generating improved prompts. If None, uses
+                make_reflection_agent() with default settings. You can customize this with:
+                - make_reflection_agent(model="your-model") to use a different model
+                - make_reflection_agent(special_instructions="...") to add custom instructions
+            pool_dir: Directory to store generated prompt variants.
+            minibatch_size: Number of cases to test candidates on before full evaluation.
+            max_pool_size: Maximum number of candidates to keep in the pool.
+            seed: Random seed for reproducible optimization.
+            keep_failed_mutations: Whether to keep failed prompt files on disk.
+
+        Example run_case implementation:
+            ```python
+            async def run_case(prompt_file: str, user_input: CustomerMessage) -> SupportClassification:
+                # prompt_file is an absolute path like "/path/to/prompts/candidate_001.txt"
+                agent = create_support_agent(prompt_file=prompt_file, model="gpt-4")
+                result = await agent.run(user_input.message)
+                return result.output
+            ```
+        """
         self.dataset = dataset
+        # Store the user's run_case function - must have signature (prompt_file: str, input: Any) -> Any
         self.run_case = run_case
-        self.reflection_agent = reflection_agent
+        # Use provided reflection agent or create default one
+        self.reflection_agent = (
+            reflection_agent if reflection_agent is not None else make_reflection_agent()
+        )
         self.pool_dir = Path(pool_dir)
         self.pool_dir.mkdir(parents=True, exist_ok=True)
         self.minibatch_size = minibatch_size
@@ -91,12 +150,14 @@ class Optimizer:
         logger.info(f"🚀 Starting optimization with seed: {seed_prompt_file}")
         logger.info(f"📋 Budget: {full_validation_budget} validations")
 
-        self._add_candidate(seed_prompt_file, parent=None, note="seed")
+        # Add the initial seed prompt as the first candidate
+        await self._add_candidate(seed_prompt_file, parent=None, note="seed")
         validations = 1
 
         while validations < full_validation_budget:
             logger.info(f"\n🔄 OPTIMIZATION ITERATION {validations}/{full_validation_budget}")
 
+            # Select parent using weighted sampling based on individual case win rates
             parent_idx = self._sample_candidate_pareto()
             parent_candidate = self.candidates[parent_idx]
             parent_avg = mean(r.score for r in self.eval_rows[parent_idx])
@@ -115,7 +176,7 @@ class Optimizer:
             gate_result = await self._minibatch_gate(parent_idx, new_prompt_path, mb_ids)
             if gate_result["passed"]:
                 logger.info("✅ MINIBATCH PASSED! Adding to candidate pool")
-                self._add_candidate(
+                await self._add_candidate(
                     new_prompt_path, parent=parent_idx, note="reflected+passed_minibatch"
                 )
                 # Clear failed mutations on successful improvement
@@ -174,12 +235,12 @@ class Optimizer:
 
     # ---------- helpers ----------
 
-    def _add_candidate(self, prompt_path: Path, parent: int | None, note: str) -> int:
+    async def _add_candidate(self, prompt_path: Path, parent: int | None, note: str) -> int:
         self.candidates.append(Candidate(prompt_path=prompt_path, parent_index=parent, note=note))
         idx = len(self.candidates) - 1
 
         logger.info(f"🔍 Evaluating candidate {idx}: {prompt_path.name} ({note})")
-        self.eval_rows[idx] = self._evaluate_full_sync(prompt_path)
+        self.eval_rows[idx] = await self._evaluate_full(prompt_path)
 
         # Calculate and log performance metrics
         scores = [r.score for r in self.eval_rows[idx]]
@@ -245,13 +306,25 @@ class Optimizer:
         logger.info(f"⚖️ MINIBATCH GATE: Comparing child vs parent on {len(case_ids)} cases")
         logger.info(f"   Parent {parent_idx} score on minibatch: {parent_avg:.3f}")
 
-        def eval_subset(prompt: Path) -> dict[str, Any]:
-            def task_fn(user_text: str) -> Any:
-                return self.run_case(str(prompt), user_text)
+        async def eval_subset(prompt: Path) -> dict[str, Any]:
+            if inspect.iscoroutinefunction(self.run_case):
+
+                async def async_task_fn(user_text: str) -> Any:
+                    # Call user's run_case function with absolute path to prompt file and case input
+                    return await self.run_case(str(prompt), user_text)
+
+                task_fn = async_task_fn
+            else:
+
+                def sync_task_fn(user_text: str) -> Any:
+                    # Call user's run_case function with absolute path to prompt file and case input
+                    return self.run_case(str(prompt), user_text)
+
+                task_fn = sync_task_fn
 
             # build a mini dataset on the fly
             mini = Dataset(cases=sub_cases, evaluators=self.dataset.evaluators)
-            rep = mini.evaluate_sync(task_fn)
+            rep = await mini.evaluate(task_fn)
             scores = [_score_from_report_case(rc) for rc in rep.cases]
             all_reasons = []
             for rc in rep.cases:
@@ -259,7 +332,7 @@ class Optimizer:
             avg_score = mean(scores) if scores else 0.0
             return {"avg_score": avg_score, "reasons": all_reasons}
 
-        child_result = eval_subset(child_prompt)
+        child_result = await eval_subset(child_prompt)
         child_avg = child_result["avg_score"]
         passed = child_avg > parent_avg
 
@@ -290,7 +363,7 @@ class Optimizer:
         examples = []
         for i in case_ids:
             ce = self.eval_rows[parent_idx][i]
-            inputs = self.dataset.cases[i].user
+            inputs = self.dataset.cases[i].inputs
             feedback = (
                 "\n".join(f"- {reason}" for reason in ce.reasons)
                 if ce.reasons
@@ -339,11 +412,23 @@ class Optimizer:
         new_text = (r.output or "").strip()
         return _write_new_prompt_file(new_text, self.pool_dir, len(self.candidates))
 
-    def _evaluate_full_sync(self, prompt_path: Path) -> list[CaseEval]:
-        def task_fn(user_text: str) -> Any:
-            return self.run_case(str(prompt_path), user_text)
+    async def _evaluate_full(self, prompt_path: Path) -> list[CaseEval]:
+        if inspect.iscoroutinefunction(self.run_case):
 
-        report = self.dataset.evaluate_sync(task_fn)
+            async def async_task_fn(user_text: str) -> Any:
+                # Call user's run_case function with absolute path to prompt file and case input
+                return await self.run_case(str(prompt_path), user_text)
+
+            task_fn = async_task_fn
+        else:
+
+            def sync_task_fn(user_text: str) -> Any:
+                # Call user's run_case function with absolute path to prompt file and case input
+                return self.run_case(str(prompt_path), user_text)
+
+            task_fn = sync_task_fn
+
+        report = await self.dataset.evaluate(task_fn)
         rows: list[CaseEval] = []
         for rc in report.cases:
             score = _score_from_report_case(rc)
