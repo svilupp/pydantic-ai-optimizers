@@ -28,16 +28,44 @@ The core insight is that you don't lose learning between iterations, and the wei
 uv sync
 ```
 
-Or for running the examples:
+Or run an example directly from the project root:
 ```bash
-uv run python examples/chef/optimize.py
+uv run examples/chef/optimize.py
+uv run examples/customer_support/optimize.py
 ```
 
 ### Run the Chef Example
 
 ```bash
-cd examples/chef
-uv run python optimize.py
+uv run examples/chef/optimize.py
+```
+
+### Run the Customer Support Example
+
+```bash
+uv run examples/customer_support/optimize.py
+```
+
+To regenerate the customer support dataset after editing `examples/customer_support/data/test_cases.json`:
+```bash
+uv run examples/customer_support/dataset.py
+```
+
+## Repository Structure
+
+```
+.
+├── src/pydantic_ai_optimizers/
+│   ├── agents/
+│   │   └── reflection_agent.py
+│   ├── optimizer.py
+│   ├── config.py
+│   └── cli.py
+├── examples/
+│   ├── chef/
+│   └── customer_support/
+├── tests/
+└── docs/
 ```
 
 This will optimize a chef assistant prompt that helps users find recipes while avoiding allergens. You'll see the optimization process with real-time feedback and the final best prompt.
@@ -70,7 +98,7 @@ dataset = build_dataset("your_cases.json")
 
 # Optional: Customize the reflection agent
 reflection_agent = make_reflection_agent(
-    model="gpt-4o",  # Use a different model
+    model="openai:gpt-5-mini",  # Use a different model
     special_instructions="Focus on conciseness and clarity"  # Add custom instructions
 )
 # Or use the default: reflection_agent = None (will use make_reflection_agent() internally)
@@ -257,7 +285,7 @@ optimizer = Optimizer(
 from pydantic_ai_optimizers import make_reflection_agent
 
 # Use a different model for reflection
-reflection_agent = make_reflection_agent(model="gpt-4o")
+reflection_agent = make_reflection_agent(model="openai:gpt-5-mini")
 
 optimizer = Optimizer(
     dataset=dataset,
@@ -266,18 +294,20 @@ optimizer = Optimizer(
 )
 ```
 
-### Add Special Instructions
+### Add Special Instructions (e.g., GPT-5 prompting tips)
 ```python
-# Add custom instructions to guide prompt improvement
+import textprompts
+from pathlib import Path
+from pydantic_ai_optimizers import make_reflection_agent
+
+# Load GPT-5 prompting tips from a file and pass to the reflection agent
+tips = str(textprompts.load_prompt(
+    Path("examples/customer_support/prompts/gpt5_tips.txt")
+))
+
 reflection_agent = make_reflection_agent(
-    model="gpt-4o",
-    special_instructions=\"\"\"
-    Focus on:
-    - Making instructions more concise
-    - Improving error handling
-    - Better domain-specific guidance
-    - Clearer output formatting requirements
-    \"\"\"
+    model="openai:gpt-5-mini",
+    special_instructions=tips,
 )
 
 optimizer = Optimizer(
@@ -310,8 +340,8 @@ Set up through environment variables or configuration files:
 
 ```bash
 export OPENAI_API_KEY="your-key"
-export REFLECTION_MODEL="openai:gpt-4o"  
-export AGENT_MODEL="openai:gpt-4o-mini"
+export REFLECTION_MODEL="openai:gpt-5"  
+export AGENT_MODEL="openai:gpt-5-nano"
 export VALIDATION_BUDGET=20
 export MAX_POOL_SIZE=16
 ```

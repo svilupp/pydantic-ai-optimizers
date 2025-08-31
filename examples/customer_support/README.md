@@ -17,17 +17,17 @@ The customer support classifier extracts:
 ```
 customer_support/
 ├── agent.py                    # PydanticAI agent with NativeOutput
-├── dataset.py                  # Dataset creation and scoring logic
+├── dataset.py                  # Create/regenerate the eval dataset
 ├── optimize.py                 # Optimization loop entry point
 ├── utils.py                    # Shared models and utilities
 ├── data/
 │   └── test_cases.json        # 30 diverse test cases
 ├── evals/
-│   ├── support_cases.yaml     # Sample evaluation cases  
+│   ├── support_cases.yaml     # Generated evaluation cases
 │   └── support_cases_schema.json # JSON schema for validation
 └── prompts/
-    ├── seed.md               # Initial agent prompt
-    └── reflection.md         # Reflection agent prompt
+    ├── seed.txt               # Initial agent prompt
+    └── gpt5_tips.txt          # GPT-5 prompting tips for reflection agent
 ```
 
 ## Test Cases
@@ -54,37 +54,29 @@ Classification accuracy is scored using weighted components:
 ### Run Optimization
 
 ```bash
-# From the customer_support directory
-uv run python optimize.py
+# From project root (recommended)
+uv run examples/customer_support/optimize.py
 
-# Or from project root
-uv run python examples/customer_support/optimize.py
+# Or from the customer_support directory
+uv run optimize.py
 ```
 
 ### Test Evaluation Only
 
 ```bash
 # Run evaluation on first 3 cases to test the system
-uv run python optimize.py --eval-only
+uv run examples/customer_support/optimize.py --eval-only
 ```
 
-### Direct Classification
+### Regenerate the Dataset
 
-```python
-from examples.customer_support.agent import classify_support_message
+If you modify `data/test_cases.json`, regenerate the `evals/support_cases.yaml` file:
 
-result = classify_support_message(
-    "My credit card was charged twice for order #SH12345"
-)
-print(result)
-# SupportClassification(
-#     category='billing',
-#     urgency='normal', 
-#     surface='unknown',
-#     component=None,
-#     error_codes=['SH12345']
-# )
+```bash
+uv run examples/customer_support/dataset.py
 ```
+
+<!-- Direct classification example omitted for brevity. Use the optimizer entrypoint above for end-to-end runs. -->
 
 ## Configuration
 

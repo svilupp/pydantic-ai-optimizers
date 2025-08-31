@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import argparse
 import asyncio
 from pathlib import Path
 from typing import Any
@@ -75,7 +76,7 @@ async def run_evaluation_only(dataset: Dataset[CustomerMessage, SupportClassific
     """Run just the evaluation to test the system."""
 
     # Run evaluation on a subset of cases for testing
-    logger.info("Running evaluation on first 3 cases...")
+    logger.info("Running evaluation")
 
     async def eval_fn(customer_message: CustomerMessage) -> SupportClassification:
         prompt_file = Path(__file__).parent / "prompts/seed.txt"
@@ -117,6 +118,13 @@ async def run_optimization(dataset: Dataset[CustomerMessage, SupportClassificati
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Customer support prompt optimization")
+    parser.add_argument("--eval-only", action="store_true", help="Run evaluation")
+    args = parser.parse_args()
+
     dataset = load_dataset()
-    # asyncio.run(run_evaluation_only(dataset))
-    asyncio.run(run_optimization(dataset))
+
+    if args.eval_only:
+        asyncio.run(run_evaluation_only(dataset))
+    else:
+        asyncio.run(run_optimization(dataset))
