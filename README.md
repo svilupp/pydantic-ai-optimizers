@@ -46,11 +46,6 @@ uv run examples/chef/optimize.py
 uv run examples/customer_support/optimize.py
 ```
 
-To regenerate the customer support dataset after editing `examples/customer_support/data/test_cases.json`:
-```bash
-uv run examples/customer_support/dataset.py
-```
-
 ## Repository Structure
 
 ```
